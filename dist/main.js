@@ -1070,7 +1070,7 @@
                 }, {
                     key: "zoomDefault",
                     value: function() {
-                        this.changeZoom(100, window.innerWidth / 2, window.innerHeight / 2);
+                        this.props.zoomImageByDefault && this.changeZoom(100, window.innerWidth / 2, window.innerHeight / 2);
                     }
                     // Request to transition to the next image
                                 }, {
@@ -1416,6 +1416,7 @@
                 //-----------------------------
                 // Set z-index style, etc., for the parent react-modal (format: https://github.com/reactjs/react-modal#styles )
                 reactModalStyle: _propTypes2.default.shape({}),
+                modalCustomStyle: _propTypes2.default.shape({}),
                 // Padding (px) between the edge of the window and the lightbox
                 imagePadding: _propTypes2.default.number,
                 wrapperClassName: _propTypes2.default.string,
@@ -1426,6 +1427,8 @@
                 toolbarButtons: _propTypes2.default.arrayOf(_propTypes2.default.node),
                 // When true, clicks outside of the image close the lightbox
                 clickOutsideToClose: _propTypes2.default.bool,
+                zoomImageByDefault: _propTypes2.default.bool,
+                disableZoomButtons: _propTypes2.default.bool,
                 // Set to false to disable zoom functionality and hide zoom buttons
                 enableZoom: _propTypes2.default.bool,
                 // Override props set on react-modal (https://github.com/reactjs/react-modal)
@@ -1455,6 +1458,9 @@
                 keyRepeatLimit: 180,
                 mainSrcThumbnail: null,
                 nextLabel: "Next image",
+                disableZoomButtons: !1,
+                zoomImageByDefault: !1,
+                modalCustomStyle: {},
                 nextSrc: null,
                 nextSrcThumbnail: null,
                 onAfterOpen: function() {},

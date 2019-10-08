@@ -1185,7 +1185,9 @@ class ReactImageLightbox extends Component {
 
 
   zoomDefault() {
-    this.changeZoom(100, window.innerWidth / 2, window.innerHeight / 2);
+    if(this.props.zoomImageByDefault){
+      this.changeZoom(100, window.innerWidth / 2, window.innerHeight / 2);
+    }
   }
   // Request to transition to the next image
   requestMoveNext(event) {
@@ -1223,7 +1225,7 @@ class ReactImageLightbox extends Component {
       onAfterOpen,
       imageCrossOrigin,
       reactModalProps,
-      modalCustomStyle
+      modalCustomStyle,
     } = this.props;
     const { zoomLevel, offsetX, offsetY, isClosing, loadErrorStatus } = this.state;
 
@@ -1703,6 +1705,8 @@ ReactImageLightbox.propTypes = {
   // Set z-index style, etc., for the parent react-modal (format: https://github.com/reactjs/react-modal#styles )
   reactModalStyle: PropTypes.shape({}),
 
+  modalCustomStyle: PropTypes.shape({}),
+
   // Padding (px) between the edge of the window and the lightbox
   imagePadding: PropTypes.number,
 
@@ -1717,6 +1721,10 @@ ReactImageLightbox.propTypes = {
 
   // When true, clicks outside of the image close the lightbox
   clickOutsideToClose: PropTypes.bool,
+
+  zoomImageByDefault: PropTypes.bool,
+
+  disableZoomButtons: PropTypes.bool,
 
   // Set to false to disable zoom functionality and hide zoom buttons
   enableZoom: PropTypes.bool,
@@ -1752,6 +1760,9 @@ ReactImageLightbox.defaultProps = {
   keyRepeatLimit: 180,
   mainSrcThumbnail: null,
   nextLabel: 'Next image',
+  disableZoomButtons: false,
+  zoomImageByDefault: false,
+  modalCustomStyle: {},
   nextSrc: null,
   nextSrcThumbnail: null,
   onAfterOpen: () => { },

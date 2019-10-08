@@ -7,6 +7,7 @@ export interface ILightBoxProps {
     mainSrcThumbnail?: string;
     prevSrcThumbnail?: string;
     nextSrcThumbnail?: string;
+    zoomImageByDefault?: boolean;
     onCloseRequest(): void;
     onMovePrevRequest?(): void;
     onMoveNextRequest?(): void;
