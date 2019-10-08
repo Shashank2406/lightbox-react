@@ -26,7 +26,7 @@ export interface ILightBoxProps {
     imageCrossOrigin?: string;
     toolbarButtons?: React.ReactNode[];
     reactModalStyle?: any;
-    modalStyle?:any;
+    modalCustomStyle?:any;
     reactModalProps?: any;
     imagePadding?: number;
     clickOutsideToClose?: boolean;

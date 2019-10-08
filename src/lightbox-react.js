@@ -1223,6 +1223,7 @@ class ReactImageLightbox extends Component {
       onAfterOpen,
       imageCrossOrigin,
       reactModalProps,
+      modalCustomStyle
     } = this.props;
     const { zoomLevel, offsetX, offsetY, isClosing, loadErrorStatus } = this.state;
 
@@ -1439,8 +1440,7 @@ class ReactImageLightbox extends Component {
           className={`ril-outer ril__outer ril__outerAnimating ${this.props.wrapperClassName} ${
             isClosing ? 'ril-closing ril__outerClosing' : ''
             }`}
-          style={
-            {
+          style={ modalCustomStyle ? modalCustomStyle : {
               transition: `opacity ${animationDuration}ms`,
               animationDuration: `${animationDuration}ms`,
               animationDirection: isClosing ? 'normal' : 'reverse',
