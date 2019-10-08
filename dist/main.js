@@ -1082,7 +1082,7 @@
                 }, {
                     key: "render",
                     value: function() {
-                        var _this16 = this, _props = this.props, animationDisabled = _props.animationDisabled, animationDuration = _props.animationDuration, modalStyleProp = _props.modalStyleProp, disableZoomButtons = _props.disableZoomButtons, clickOutsideToClose = _props.clickOutsideToClose, discourageDownloads = _props.discourageDownloads, enableZoom = _props.enableZoom, imageTitle = _props.imageTitle, nextSrc = _props.nextSrc, prevSrc = _props.prevSrc, toolbarButtons = _props.toolbarButtons, reactModalStyle = _props.reactModalStyle, _onAfterOpen = _props.onAfterOpen, imageCrossOrigin = _props.imageCrossOrigin, reactModalProps = _props.reactModalProps, _state = this.state, zoomLevel = _state.zoomLevel, offsetX = _state.offsetX, offsetY = _state.offsetY, isClosing = _state.isClosing, loadErrorStatus = _state.loadErrorStatus, boxSize = this.getLightboxRect(), transitionStyle = {};
+                        var _this16 = this, _props = this.props, disableZoomButtons = _props.disableZoomButtons ,modalStyleProp = _props.modalStyle ,animationDisabled = _props.animationDisabled, animationDuration = _props.animationDuration, clickOutsideToClose = _props.clickOutsideToClose, discourageDownloads = _props.discourageDownloads, enableZoom = _props.enableZoom, imageTitle = _props.imageTitle, nextSrc = _props.nextSrc, prevSrc = _props.prevSrc, toolbarButtons = _props.toolbarButtons, reactModalStyle = _props.reactModalStyle, _onAfterOpen = _props.onAfterOpen, imageCrossOrigin = _props.imageCrossOrigin, reactModalProps = _props.reactModalProps, _state = this.state, zoomLevel = _state.zoomLevel, offsetX = _state.offsetX, offsetY = _state.offsetY, isClosing = _state.isClosing, loadErrorStatus = _state.loadErrorStatus, boxSize = this.getLightboxRect(), transitionStyle = {};
                         // Transition settings for sliding animations
                         !animationDisabled && this.isAnimating() && (transitionStyle = _extends({}, transitionStyle, {
                             transition: "transform " + animationDuration + "ms"
@@ -1217,7 +1217,8 @@
                             // eslint-disable-line jsx-a11y/no-static-element-interactions
                             // Floating modal with closing animations
                             className: "ril-outer ril__outer ril__outerAnimating " + this.props.wrapperClassName + " " + (isClosing ? "ril-closing ril__outerClosing" : ""),
-                            style: modalStyleProp || {
+                            style: modalStyleProp ? modalStyleProp : {
+                                // backgroundColor: '#fff',
                                 transition: "opacity " + animationDuration + "ms",
                                 animationDuration: animationDuration + "ms",
                                 animationDirection: isClosing ? "normal" : "reverse"
@@ -1379,6 +1380,8 @@
                 animationDisabled: _propTypes2.default.bool,
                 // Disable animation on actions performed with keyboard shortcuts
                 animationOnKeyInput: _propTypes2.default.bool,
+                // Disable Zoom Button
+                disableZoomButtons: _propTypes2.default.bool,
                 // Animation duration (ms)
                 animationDuration: _propTypes2.default.number,
                 //-----------------------------
@@ -1404,6 +1407,8 @@
                 //-----------------------------
                 // Set z-index style, etc., for the parent react-modal (format: https://github.com/reactjs/react-modal#styles )
                 reactModalStyle: _propTypes2.default.shape({}),
+                // Set Modal Style 
+                modalStyle: _propTypes2.default.shape({}),
                 // Padding (px) between the edge of the window and the lightbox
                 imagePadding: _propTypes2.default.number,
                 wrapperClassName: _propTypes2.default.string,
@@ -1437,6 +1442,7 @@
                 closeLabel: "Close lightbox",
                 discourageDownloads: !1,
                 enableZoom: !0,
+                disableZoomButtons: !0,
                 imagePadding: 10,
                 imageCrossOrigin: null,
                 keyRepeatKeyupBonus: 40,
@@ -1454,6 +1460,7 @@
                 prevSrc: null,
                 prevSrcThumbnail: null,
                 reactModalStyle: {},
+                modalStyle: {},
                 wrapperClassName: "",
                 zoomInLabel: "Zoom in",
                 zoomOutLabel: "Zoom out",

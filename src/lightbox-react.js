@@ -1194,7 +1194,7 @@ class ReactImageLightbox extends Component {
     const {
       animationDisabled,
       animationDuration,
-      modalStyleProp,
+      modalStyle,
       disableZoomButtons,
       clickOutsideToClose,
       discourageDownloads,

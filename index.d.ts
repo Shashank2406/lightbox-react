@@ -17,6 +17,7 @@ export interface ILightBoxProps {
     discourageDownloads?: boolean;
     animationDisabled?: boolean;
     animationOnKeyInput?: boolean;
+    disableZoomButtons?: boolean;
     animationDuration?: number;
     keyRepeatLimit?: number;
     keyRepeatKeyupBonus?: number;
@@ -25,6 +26,7 @@ export interface ILightBoxProps {
     imageCrossOrigin?: string;
     toolbarButtons?: React.ReactNode[];
     reactModalStyle?: any;
+    modalStyle?:any;
     reactModalProps?: any;
     imagePadding?: number;
     clickOutsideToClose?: boolean;
