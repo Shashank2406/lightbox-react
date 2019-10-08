@@ -23,6 +23,9 @@ import {
 } from './constant';
 import './style.css';
 
+let clicks = [];
+let timeout;
+
 class ReactImageLightbox extends Component {
   static isTargetMatchImage(target) {
     return target && /ril-image-current/.test(target.className);
@@ -127,6 +130,7 @@ class ReactImageLightbox extends Component {
     this.requestMovePrev = this.requestMovePrev.bind(this);
   }
 
+
   componentWillMount() {
     // Timeouts - always clear it before umount
     this.timeouts = [];
@@ -193,7 +197,6 @@ class ReactImageLightbox extends Component {
   componentDidMount() {
     // Prevents cross-origin errors when using a cross-origin iframe
     this.windowContext = getHighestSafeWindowContext();
-
     this.listeners = {
       resize: this.handleWindowResize,
       mouseup: this.handleMouseUp,
@@ -1180,6 +1183,10 @@ class ReactImageLightbox extends Component {
     }
   }
 
+
+  zoomDefault() {
+    this.changeZoom(100, window.innerWidth / 2, window.innerHeight / 2);
+  }
   // Request to transition to the next image
   requestMoveNext(event) {
     this.requestMove('next', event);
@@ -1190,11 +1197,20 @@ class ReactImageLightbox extends Component {
     this.requestMove('prev', event);
   }
 
+
+  clickHandler(event) {
+    event.preventDefault();
+    clicks.push(new Date().getTime());
+    if (clicks.length > 1 && clicks[clicks.length - 1] - clicks[clicks.length - 2] < 250) {
+      this.handleImageDoubleClick(event);
+    } 
+  }
+
+
   render() {
     const {
       animationDisabled,
       animationDuration,
-      modalStyle,
       disableZoomButtons,
       clickOutsideToClose,
       discourageDownloads,
@@ -1212,6 +1228,7 @@ class ReactImageLightbox extends Component {
 
     const boxSize = this.getLightboxRect();
     let transitionStyle = {};
+
 
     // Transition settings for sliding animations
     if (!animationDisabled && this.isAnimating()) {
@@ -1297,7 +1314,9 @@ class ReactImageLightbox extends Component {
         displayItems.push(
           <div
             className={`${imageClass} ril__image ril__imageDiscourager`}
-            onDoubleClick={this.handleImageDoubleClick}
+            onLoad={this.zoomDefault.bind(this)}
+            onClick={this.clickHandler.bind(this)}
+            // onDoubleClick={this.handleImageDoubleClick}
             onWheel={this.handleImageMouseWheel}
             style={imageStyle}
             key={imageSrc + keyEndings[srcType]}
@@ -1310,7 +1329,9 @@ class ReactImageLightbox extends Component {
           <img
             {...(imageCrossOrigin ? { crossOrigin: imageCrossOrigin } : {})}
             className={`${imageClass} ril__image`}
-            onDoubleClick={this.handleImageDoubleClick}
+            onLoad={this.zoomDefault.bind(this)}
+            onClick={this.clickHandler.bind(this)}
+            // onDoubleClick={this.handleImageDoubleClick}
             onWheel={this.handleImageMouseWheel}
             onDragStart={e => e.preventDefault()}
             style={imageStyle}
@@ -1419,12 +1440,11 @@ class ReactImageLightbox extends Component {
             isClosing ? 'ril-closing ril__outerClosing' : ''
             }`}
           style={
-            modalStyleProp ? modalStyleProp :
-              {
-                transition: `opacity ${animationDuration}ms`,
-                animationDuration: `${animationDuration}ms`,
-                animationDirection: isClosing ? 'normal' : 'reverse',
-              }}
+            {
+              transition: `opacity ${animationDuration}ms`,
+              animationDuration: `${animationDuration}ms`,
+              animationDirection: isClosing ? 'normal' : 'reverse',
+            }}
           ref={el => {
             this.outerEl = el;
           }}

@@ -206,7 +206,7 @@
                 }) : obj[key] = value, obj;
             }
             __webpack_require__(9);
-            var ReactImageLightbox = function(_Component) {
+            var clicks = [], ReactImageLightbox = function(_Component) {
                 function ReactImageLightbox(props) {
                     !function(instance, Constructor) {
                         if (!(instance instanceof Constructor)) throw new TypeError("Cannot call a class as a function");
@@ -1067,6 +1067,11 @@
                         "prev" === direction ? (this.keyCounter -= 1, this.setState(nextState), this.props.onMovePrevRequest(event)) : (this.keyCounter += 1, 
                         this.setState(nextState), this.props.onMoveNextRequest(event));
                     }
+                }, {
+                    key: "zoomDefault",
+                    value: function() {
+                        this.changeZoom(100, window.innerWidth / 2, window.innerHeight / 2);
+                    }
                     // Request to transition to the next image
                                 }, {
                     key: "requestMoveNext",
@@ -1080,9 +1085,14 @@
                         this.requestMove("prev", event);
                     }
                 }, {
+                    key: "clickHandler",
+                    value: function(event) {
+                        event.preventDefault(), clicks.push(new Date().getTime()), clicks.length > 1 && clicks[clicks.length - 1] - clicks[clicks.length - 2] < 250 && this.handleImageDoubleClick(event);
+                    }
+                }, {
                     key: "render",
                     value: function() {
-                        var _this16 = this, _props = this.props, disableZoomButtons = _props.disableZoomButtons ,modalStyleProp = _props.modalStyle ,animationDisabled = _props.animationDisabled, animationDuration = _props.animationDuration, clickOutsideToClose = _props.clickOutsideToClose, discourageDownloads = _props.discourageDownloads, enableZoom = _props.enableZoom, imageTitle = _props.imageTitle, nextSrc = _props.nextSrc, prevSrc = _props.prevSrc, toolbarButtons = _props.toolbarButtons, reactModalStyle = _props.reactModalStyle, _onAfterOpen = _props.onAfterOpen, imageCrossOrigin = _props.imageCrossOrigin, reactModalProps = _props.reactModalProps, _state = this.state, zoomLevel = _state.zoomLevel, offsetX = _state.offsetX, offsetY = _state.offsetY, isClosing = _state.isClosing, loadErrorStatus = _state.loadErrorStatus, boxSize = this.getLightboxRect(), transitionStyle = {};
+                        var _this16 = this, _props = this.props, modalStyleProp = _props.modalStyle, animationDisabled = _props.animationDisabled, animationDuration = _props.animationDuration, disableZoomButtons = _props.disableZoomButtons, clickOutsideToClose = _props.clickOutsideToClose, discourageDownloads = _props.discourageDownloads, enableZoom = _props.enableZoom, imageTitle = _props.imageTitle, nextSrc = _props.nextSrc, prevSrc = _props.prevSrc, toolbarButtons = _props.toolbarButtons, reactModalStyle = _props.reactModalStyle, _onAfterOpen = _props.onAfterOpen, imageCrossOrigin = _props.imageCrossOrigin, reactModalProps = _props.reactModalProps, _state = this.state, zoomLevel = _state.zoomLevel, offsetX = _state.offsetX, offsetY = _state.offsetY, isClosing = _state.isClosing, loadErrorStatus = _state.loadErrorStatus, boxSize = this.getLightboxRect(), transitionStyle = {};
                         // Transition settings for sliding animations
                         !animationDisabled && this.isAnimating() && (transitionStyle = _extends({}, transitionStyle, {
                             transition: "transform " + animationDuration + "ms"
@@ -1114,7 +1124,8 @@
                                         var object, imageSrc = bestImageInfo.src;
                                         discourageDownloads ? (imageStyle.backgroundImage = "url('" + imageSrc + "')", displayItems.push(_react2.default.createElement("div", {
                                             className: imageClass + " ril__image ril__imageDiscourager",
-                                            onDoubleClick: _this16.handleImageDoubleClick,
+                                            onLoad: _this16.zoomDefault.bind(_this16),
+                                            onClick: _this16.clickHandler.bind(_this16),
                                             onWheel: _this16.handleImageMouseWheel,
                                             style: imageStyle,
                                             key: imageSrc + keyEndings[srcType]
@@ -1124,7 +1135,8 @@
                                             crossOrigin: imageCrossOrigin
                                         } : {}, {
                                             className: imageClass + " ril__image",
-                                            onDoubleClick: _this16.handleImageDoubleClick,
+                                            onLoad: _this16.zoomDefault.bind(_this16),
+                                            onClick: _this16.clickHandler.bind(_this16),
                                             onWheel: _this16.handleImageMouseWheel,
                                             onDragStart: function(e) {
                                                 return e.preventDefault();
@@ -1380,8 +1392,6 @@
                 animationDisabled: _propTypes2.default.bool,
                 // Disable animation on actions performed with keyboard shortcuts
                 animationOnKeyInput: _propTypes2.default.bool,
-                // Disable Zoom Button
-                disableZoomButtons: _propTypes2.default.bool,
                 // Animation duration (ms)
                 animationDuration: _propTypes2.default.number,
                 //-----------------------------
@@ -1407,8 +1417,6 @@
                 //-----------------------------
                 // Set z-index style, etc., for the parent react-modal (format: https://github.com/reactjs/react-modal#styles )
                 reactModalStyle: _propTypes2.default.shape({}),
-                // Set Modal Style 
-                modalStyle: _propTypes2.default.shape({}),
                 // Padding (px) between the edge of the window and the lightbox
                 imagePadding: _propTypes2.default.number,
                 wrapperClassName: _propTypes2.default.string,
