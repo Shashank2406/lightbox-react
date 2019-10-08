@@ -1194,6 +1194,8 @@ class ReactImageLightbox extends Component {
     const {
       animationDisabled,
       animationDuration,
+      modalStyleProp,
+      disableZoomButtons,
       clickOutsideToClose,
       discourageDownloads,
       enableZoom,
@@ -1415,12 +1417,14 @@ class ReactImageLightbox extends Component {
           // Floating modal with closing animations
           className={`ril-outer ril__outer ril__outerAnimating ${this.props.wrapperClassName} ${
             isClosing ? 'ril-closing ril__outerClosing' : ''
-          }`}
-          style={{
-            transition: `opacity ${animationDuration}ms`,
-            animationDuration: `${animationDuration}ms`,
-            animationDirection: isClosing ? 'normal' : 'reverse',
-          }}
+            }`}
+          style={
+            modalStyleProp ? modalStyleProp :
+              {
+                transition: `opacity ${animationDuration}ms`,
+                animationDuration: `${animationDuration}ms`,
+                animationDirection: isClosing ? 'normal' : 'reverse',
+              }}
           ref={el => {
             this.outerEl = el;
           }}
@@ -1478,7 +1482,7 @@ class ReactImageLightbox extends Component {
                   </li>
                 ))}
 
-              {enableZoom && (
+              {enableZoom && !disableZoomButtons && (
                 <li className="ril-toolbar__item ril__toolbarItem">
                   <button // Lightbox zoom in button
                     type="button"
@@ -1504,7 +1508,7 @@ class ReactImageLightbox extends Component {
                 </li>
               )}
 
-              {enableZoom && (
+              {enableZoom && !disableZoomButtons && (
                 <li className="ril-toolbar__item ril__toolbarItem">
                   <button // Lightbox zoom out button
                     type="button"
@@ -1730,11 +1734,11 @@ ReactImageLightbox.defaultProps = {
   nextLabel: 'Next image',
   nextSrc: null,
   nextSrcThumbnail: null,
-  onAfterOpen: () => {},
-  onImageLoadError: () => {},
-  onImageLoad: () => {},
-  onMoveNextRequest: () => {},
-  onMovePrevRequest: () => {},
+  onAfterOpen: () => { },
+  onImageLoadError: () => { },
+  onImageLoad: () => { },
+  onMoveNextRequest: () => { },
+  onMovePrevRequest: () => { },
   prevLabel: 'Previous image',
   prevSrc: null,
   prevSrcThumbnail: null,
