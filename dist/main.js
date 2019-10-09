@@ -1068,6 +1068,15 @@
                         this.setState(nextState), this.props.onMoveNextRequest(event));
                     }
                 }, {
+                    key: "getMobileOperatingSystem",
+                    value: function() {
+                        var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                        // Windows Phone must come first because its UA also contains "Android"
+                                                return /windows phone/i.test(userAgent) ? "Windows Phone" : /android/i.test(userAgent) ? "Android" : 
+                        // iOS detection from: http://stackoverflow.com/a/9039885/177710
+                        /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream ? "iOS" : "unknown";
+                    }
+                }, {
                     key: "zoomDefault",
                     value: function() {
                         this.props.zoomImageByDefault && this.changeZoom(100, window.innerWidth / 2, window.innerHeight / 2);
@@ -1087,7 +1096,7 @@
                 }, {
                     key: "clickHandler",
                     value: function(event) {
-                        event.preventDefault(), clicks.push(new Date().getTime()), clicks.length > 1 && clicks[clicks.length - 1] - clicks[clicks.length - 2] < 250 && this.handleImageDoubleClick(event);
+                        event.preventDefault(), clicks.push(new Date().getTime()), clicks.length > 1 && clicks[clicks.length - 1] - clicks[clicks.length - 2] < 250 && "android" === this.getMobileOperatingSystem().toLowerCase() && this.handleImageDoubleClick(event);
                     }
                 }, {
                     key: "render",
@@ -1126,6 +1135,7 @@
                                             className: imageClass + " ril__image ril__imageDiscourager",
                                             onLoad: _this16.zoomDefault.bind(_this16),
                                             onClick: _this16.clickHandler.bind(_this16),
+                                            onDoubleClick: _this16.handleImageDoubleClick,
                                             onWheel: _this16.handleImageMouseWheel,
                                             style: imageStyle,
                                             key: imageSrc + keyEndings[srcType]
@@ -1137,6 +1147,7 @@
                                             className: imageClass + " ril__image",
                                             onLoad: _this16.zoomDefault.bind(_this16),
                                             onClick: _this16.clickHandler.bind(_this16),
+                                            onDoubleClick: _this16.handleImageDoubleClick,
                                             onWheel: _this16.handleImageMouseWheel,
                                             onDragStart: function(e) {
                                                 return e.preventDefault();

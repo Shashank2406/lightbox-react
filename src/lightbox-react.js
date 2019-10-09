@@ -1183,6 +1183,26 @@ class ReactImageLightbox extends Component {
     }
   }
 
+  getMobileOperatingSystem() {
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  
+        // Windows Phone must come first because its UA also contains "Android"
+      if (/windows phone/i.test(userAgent)) {
+          return "Windows Phone";
+      }
+  
+      if (/android/i.test(userAgent)) {
+          return "Android";
+      }
+  
+      // iOS detection from: http://stackoverflow.com/a/9039885/177710
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          return "iOS";
+      }
+  
+      return "unknown";
+  }
+
 
   zoomDefault() {
     if(this.props.zoomImageByDefault){
@@ -1203,7 +1223,7 @@ class ReactImageLightbox extends Component {
   clickHandler(event) {
     event.preventDefault();
     clicks.push(new Date().getTime());
-    if (clicks.length > 1 && clicks[clicks.length - 1] - clicks[clicks.length - 2] < 250) {
+    if (clicks.length > 1 && clicks[clicks.length - 1] - clicks[clicks.length - 2] < 250 && this.getMobileOperatingSystem().toLowerCase() === 'android') {
       this.handleImageDoubleClick(event);
     } 
   }
@@ -1319,7 +1339,7 @@ class ReactImageLightbox extends Component {
             className={`${imageClass} ril__image ril__imageDiscourager`}
             onLoad={this.zoomDefault.bind(this)}
             onClick={this.clickHandler.bind(this)}
-            // onDoubleClick={this.handleImageDoubleClick}
+            onDoubleClick={this.handleImageDoubleClick}
             onWheel={this.handleImageMouseWheel}
             style={imageStyle}
             key={imageSrc + keyEndings[srcType]}
@@ -1334,7 +1354,7 @@ class ReactImageLightbox extends Component {
             className={`${imageClass} ril__image`}
             onLoad={this.zoomDefault.bind(this)}
             onClick={this.clickHandler.bind(this)}
-            // onDoubleClick={this.handleImageDoubleClick}
+            onDoubleClick={this.handleImageDoubleClick}
             onWheel={this.handleImageMouseWheel}
             onDragStart={e => e.preventDefault()}
             style={imageStyle}
