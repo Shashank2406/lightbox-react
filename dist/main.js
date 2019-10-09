@@ -1079,7 +1079,10 @@
                 }, {
                     key: "zoomDefault",
                     value: function() {
-                        this.props.zoomImageByDefault && this.changeZoom(100, window.innerWidth / 2, window.innerHeight / 2);
+                        if (this.props.zoomImageByDefault) {
+                            var userAgent = navigator.userAgent.toLowerCase(), defaultZoomValue = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent) ? 100 : 150;
+                            this.changeZoom(defaultZoomValue, window.innerWidth / 2, window.innerHeight / 2);
+                        }
                     }
                     // Request to transition to the next image
                                 }, {

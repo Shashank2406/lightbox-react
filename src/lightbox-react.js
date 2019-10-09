@@ -1206,7 +1206,10 @@ class ReactImageLightbox extends Component {
 
   zoomDefault() {
     if(this.props.zoomImageByDefault){
-      this.changeZoom(100, window.innerWidth / 2, window.innerHeight / 2);
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+      const defaultZoomValue = (isTablet) ? 100 : 150;
+      this.changeZoom(defaultZoomValue, window.innerWidth / 2, window.innerHeight / 2);
     }
   }
   // Request to transition to the next image
