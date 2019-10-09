@@ -1203,6 +1203,12 @@ class ReactImageLightbox extends Component {
       return "unknown";
   }
 
+  getAppleDeviceVersion() {
+    if (/iP(hone|od|ad)/.test(navigator.platform)) {
+      var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+      return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+    }
+  }
 
   zoomDefault() {
     if(this.props.zoomImageByDefault){
@@ -1226,8 +1232,11 @@ class ReactImageLightbox extends Component {
   clickHandler(event) {
     event.preventDefault();
     clicks.push(new Date().getTime());
-    if (clicks.length > 1 && clicks[clicks.length - 1] - clicks[clicks.length - 2] < 250 && this.getMobileOperatingSystem().toLowerCase() === 'android') {
-      this.handleImageDoubleClick(event);
+    const iosVersion = this.getAppleDeviceVersion();
+    if (clicks.length > 1 && clicks[clicks.length - 1] - clicks[clicks.length - 2] < 250) {
+      if(this.getMobileOperatingSystem().toLowerCase() === 'android' || (iosVersion && iosVersion[0] < 13)){
+        this.handleImageDoubleClick(event);
+      }
     } 
   }
 

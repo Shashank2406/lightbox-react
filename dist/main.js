@@ -1077,6 +1077,14 @@
                         /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream ? "iOS" : "unknown";
                     }
                 }, {
+                    key: "getAppleDeviceVersion",
+                    value: function() {
+                        if (/iP(hone|od|ad)/.test(navigator.platform)) {
+                            var v = navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/);
+                            return [ parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10) ];
+                        }
+                    }
+                }, {
                     key: "zoomDefault",
                     value: function() {
                         if (this.props.zoomImageByDefault) {
@@ -1099,7 +1107,9 @@
                 }, {
                     key: "clickHandler",
                     value: function(event) {
-                        event.preventDefault(), clicks.push(new Date().getTime()), clicks.length > 1 && clicks[clicks.length - 1] - clicks[clicks.length - 2] < 250 && "android" === this.getMobileOperatingSystem().toLowerCase() && this.handleImageDoubleClick(event);
+                        event.preventDefault(), clicks.push(new Date().getTime());
+                        var iosVersion = this.getAppleDeviceVersion();
+                        clicks.length > 1 && clicks[clicks.length - 1] - clicks[clicks.length - 2] < 250 && ("android" === this.getMobileOperatingSystem().toLowerCase() || iosVersion && iosVersion[0] < 13) && this.handleImageDoubleClick(event);
                     }
                 }, {
                     key: "render",
